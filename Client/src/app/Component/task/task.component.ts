@@ -218,10 +218,7 @@ export class TaskComponent implements OnInit {
     this.isTaskCreating = false;
   }
 
-  redirectToProject(projectId: number): void {
-    this.router.navigate(['/project', projectId]);
-  }
-
+  
   openCreateProjectPopup() {
     this.isOpenCreateProject = true;
   }
@@ -341,18 +338,24 @@ export class TaskComponent implements OnInit {
     this.editProjectNow = true;
   }
 
+  
   fetchProjectDetails() {
     const userDetails = localStorage.getItem('userDetails');
     if (userDetails) {
       const user = JSON.parse(userDetails);
       const userId = user.user.userId;
-      const userNamename=user.user.username
-
+  
       this.operationService.getProjectByUserId(userId).subscribe(
         (response) => {
+          
           console.log('get projects done');
           this.projects = response.projects;
-          this.toastr.success('Projects fetched successfullly !!', 'Success');
+          console.log(response.projects)
+          // Assuming that the usernames are directly available in the response
+          this.projects.forEach((project: any) => {
+          });
+          
+          this.toastr.success('Projects fetched successfully !!', 'Success');
         },
         (error) => {
           this.toastr.error('Project fetching failed !!!', error);
@@ -360,6 +363,8 @@ export class TaskComponent implements OnInit {
       );
     }
   }
+  
+  
 
   fetchTasks(projectId: any) {
     this.projectId = projectId;

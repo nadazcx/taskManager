@@ -16,11 +16,12 @@ export class OperationService {
 
   getProjectByUserId(req:any) : Observable<any>{
     const token = this.commonService.getToken();
-
+    console.log("hi");
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
+    
 
     return this.http.post(`${this.apiUrl}/getProjectsByUserId`, { userId: req }, {headers} );
   }
@@ -31,6 +32,7 @@ export class OperationService {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     });
+    console.log(`${this.apiUrl}/fetchAllUserList`, { headers })
   
     return this.http.get(`${this.apiUrl}/fetchAllUserList`, { headers }).pipe(
       catchError((error) => {
@@ -52,6 +54,7 @@ export class OperationService {
     });
 
     return this.http.post(`${this.apiUrl}/getTaskbyProjectId`,{projectId : req}, {headers});
+    console.log(`${this.apiUrl}/getTaskbyProjectId`,{projectId : req}, {headers})
   }
 
   deleteTaskById(req:any) : Observable<any>{

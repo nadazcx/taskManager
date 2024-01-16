@@ -1,64 +1,54 @@
 import express from "express";
 import db from "../config/db";
 import { fetchAllUserList } from "../Services/commonService";
+import { FieldPacket, RowDataPacket } from "mysql2";
 const router = express.Router();
 
 router.post("/getProjectsByUserId", async (req: any, res: any) => {
   try {
     const userId = req.body.userId;
-    const [projects]: any = await db
-      .promise()
-      .query("SELECT * FROM project WHERE FIND_IN_SET(?, userIds)", [userId]);
 
-    res.json({ projects });
+    // Use type assertion for the result of the projects query
+    const [projects] = await (db
+      .promise()
+      .query("SELECT * FROM project WHERE FIND_IN_SET(?, userIds)", [userId]) as Promise<[RowDataPacket[], FieldPacket[]]>);
+
+    // Extract user IDs from the projects
+    const userIds: number[] = [];
+    for (const project of projects) {
+      userIds.push(...(project.userIds as string).split(',').map(Number));
+    }
+
+    // Use type assertion for the result of the users query
+    const [users] = await (db
+      .promise()
+      .query("SELECT DISTINCT username FROM users WHERE userId IN (?)", [userIds]) as Promise<[RowDataPacket[], FieldPacket[]]>);
+
+    // Extract usernames into an array
+    const usernames: string[] = users.map((user) => user.username);
+
+    // Add usernames to the projects with the first one as the owner
+    const projectsWithUsernames: any[] = projects.map((project) => {
+      const ownerUsername = usernames[0];
+      return {
+        pid: project.pid,
+        projectName: project.projectName,
+        ownerUsername,
+        usernames,
+        // Add other project details as needed
+      };
+    });
+
+    res.json({ projects: projectsWithUsernames });
   } catch (error) {
     console.error("Error fetching projects:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
-router.get("/getProjectDetailsByPid/:pid", async (req, res) => {
-  try {
-    const { pid } = req.params;
 
-    // Fetch project details from the database based on the project ID
-    const [project]: any = await db
-      .promise()
-      .query("SELECT * FROM project WHERE pid=?", [pid]);
 
-    if (!project) {
-      return res.status(404).json({ message: "Project not found" });
-    }
 
-    // Fetch user IDs associated with the project
-    const userIds = project[0].userIds.split(',').map(Number);
-
-    // Fetch usernames for each user ID
-    const [users]: any = await db
-      .promise()
-      .query("SELECT userId, username FROM users WHERE userId IN (?)", [userIds]);
-
-    // Create an array with user details
-    const usersDetails = users.map((user: any) => ({
-      userId: user.userId,
-      username: user.username,
-      // Add other user details as needed
-    }));
-
-    // Customize the response based on your project structure
-    const projectDetails = {
-      pid: project[0].pid,
-      projectName: project[0].projectName,
-      users: usersDetails,
-      // Add other project details as needed
-    };
-
-    res.json(projectDetails);
-  } catch (error) {
-    console.error("Error fetching project details:", error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-});
 
 
 router.post("/createProject", async (req: any, res: any) => {

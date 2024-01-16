@@ -16,7 +16,8 @@
     <div class="card-body">
       <h5 class="card-title"> Owner of the project {{ project.pid }}</h5>
       <p class="card-text">{{ project.userIds }}</p>
-      <p class="card-text">{{ project.userNamename }}</p>
+      <p class="card-text">{{ project.users}}</p>
+      <p class="card-text">{{ project.usernames}}</p>
 
       <div class="project-edit">
         <a class="btn btn-primary" (click)="fetchTasks(project.pid)"
