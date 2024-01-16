@@ -1,0 +1,165 @@
+<navbar></navbar>
+
+<button class="btn btn-primary" (click)="openCreateProjectPopup()">
+  Create Project
+</button>
+
+<!-- project list -->
+<div class="projects-container" *ngIf="projects.length > 0; else noProjects">
+  <div
+    class="card project-card"
+    *ngFor="let project of projects.slice().reverse()"
+  >
+    <h5 class="card-header" >
+      {{ project.projectName }}
+    </h5>
+    <div class="card-body">
+      <h5 class="card-title"> Owner of the project {{ project.pid }}</h5>
+      <p class="card-text">{{ project.userIds }}</p>
+      <div class="project-edit">
+        <a class="btn btn-primary" (click)="fetchTasks(project.pid)"
+          >Open Related tasks</a
+        >
+        <!-- <a class="btn btn-primary" (click)="editProjectOpen(project)"
+          >Edit Project</a
+        > -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- edit project popup -->
+
+<!-- tasks popup -->
+<div class="custom-popup" *ngIf="openTaskPopup" tabindex="-1">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h5 class="header">Tasks</h5>
+      <button class="close-button" (click)="closePopup()">close</button>
+    </div>
+    <div class="modal-body">
+      <!-- Example single danger button -->
+
+      <button class="create-tasks-button" (click)="showCreateTask()">
+        Create tasks
+      </button>
+
+      <ng-container *ngIf="isTaskCreating">
+        <div class="create-task-form mt-2 border p-3">
+          <div
+            class="form-header d-flex justify-content-between align-items-center"
+          >
+            <h5 class="header">Create Task</h5>
+            <button
+              class="btn btn-outline-secondary"
+              (click)="closeCreateTask()"
+            >
+              Close
+            </button>
+          </div>
+          <form [formGroup]="taskForm" (submit)="submitCreateTask()">
+            <div class="form-group">
+              <label for="taskDescription">Task Description</label>
+              <input
+                id="taskDescription"
+                class="form-control"
+                formControlName="taskDescription"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Create Task</button>
+          </form>
+        </div>
+      </ng-container>
+      <!-- Display tasks here -->
+      <ng-container *ngIf="tasks && tasks.length > 0; else noTasks">
+        <div class="tasks-list">
+          <div class="list-group">
+            <div class="list-group-item" *ngFor="let task of tasks">
+              <div class="task-row">
+                <!-- <p class="mb-1">{{ task.taskName }}</p> -->
+
+                <ng-container *ngIf="editingTask !== task; else editingMode">
+                  <p class="mb-1 overflow-ellipsis">{{ task.taskName }}</p>
+                </ng-container>
+
+                <ng-template #editingMode>
+                  <input
+                    class="form-control"
+                    [(ngModel)]="task.taskName"
+                    (keyup.enter)="saveTask(task)"
+                    (blur)="cancelEditing()"
+                  />
+                </ng-template>
+
+                <div class="task-actions">
+                  <button class="btn btn-warning" (click)="editTask(task)">
+                    Edit
+                  </button>
+                  <button class="btn btn-danger" (click)="deleteTask(task)">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Create project popup -->
+<div class="custom-popup" *ngIf="isOpenCreateProject" tabindex="-1">
+  <div class="popup-content">
+    <div class="popup-header">
+      <h5 class="header">Create Project</h5>
+      <button class="close-button" (click)="closeCreateProjectPopup()">
+        Close
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- Project Form -->
+      <form [formGroup]="projectForm" (ngSubmit)="submitProjectForm()">
+        <div class="form-group">
+          <label for="projectName">Project Name:</label>
+          <input
+            type="text"
+            id="projectName"
+            formControlName="projectName"
+            name="projectName"
+            required
+          />
+        </div>
+
+        <ng-select
+          class=""
+          [items]="userList"
+          bindLabel="username"
+          placeholder="Select user"
+          appendTo="body"
+          [multiple]="true"
+          [(ngModel)]="selectedUsers"
+          formControlName="selectedUsers"
+        >
+        </ng-select>
+
+        <button type="submit" class="btn btn-primary">
+          Create Project
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #noUsers>
+  <p>No Users available.</p>
+</ng-template>
+
+<ng-template #noProjects>
+  <p>No projects available.</p>
+</ng-template>
+
+<ng-template #noTasks>
+  <p>No tasks available.</p>
+</ng-template>

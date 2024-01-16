@@ -1,0 +1,186 @@
+.projects-container {
+    margin-top: 20px;
+    max-height: 84vh;
+    overflow-y: auto;
+    border: 1px solid black !important;
+  }
+  
+  .project-cards {
+    display: flex;
+    overflow-x: auto;
+    margin-top: 5px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .project-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-right: 10px;
+    min-width: 200px; /* Set a minimum width for each card */
+  }
+
+  .card-header{
+    background-color: #bde0fe;
+  }
+
+  .custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+  }
+  /* Add this style for rounded corners on the entire popup */
+.popup-content {
+  background-color: #fff;
+  border: 2px solid black;
+  width: 40%;
+  border-radius: 10px; /* Adjust the radius as needed */
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #bde0fe;
+  padding: 10px;
+  border-top-left-radius: 10px; /* Match the top-left corner radius of the popup */
+  border-top-right-radius: 10px; /* Match the top-right corner radius of the popup */
+}
+
+.modal-body {
+  padding: 20px;
+  border-bottom-left-radius: 10px; /* Match the bottom-left corner radius of the popup */
+  border-bottom-right-radius: 10px; /* Match the bottom-right corner radius of the popup */
+}
+
+.list-group {
+
+}
+
+
+
+.tasks-list {
+  max-height: 500px;
+  overflow: auto;
+}
+
+.list-group-item {
+  /* Add your custom styling for list group items if needed */
+}
+
+.task-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px; /* Adjust the spacing between buttons */
+}
+
+
+.close-button {
+  border-radius: 5px;
+  background-color: #f2e8cf;
+}
+
+
+.custom-popup-openProject {
+  width: 300px;
+}
+
+.popup-content {
+  /* Add some padding and border for better visual appearance */
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.popup-header {
+  /* Style the header as needed */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: -9px;}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Optional: Style the form inputs */
+input,
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white !important;
+  color: black !important;
+}
+
+/* Optional: Style the submit button */
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-username option {
+  color: #333 !important; 
+  background-color: #fff !important; 
+}
+
+/* Optional: Style the close button */
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.close-button:hover {
+  text-decoration: underline;
+}
+
+
+.ng-select {
+  width: 100%; /* Adjust the width as needed */
+}
+
+
+.project-edit{
+  flex-direction: row;
+  margin-right: 5px;
+}
+
+.project-edit a {
+  margin-right: 10px;
+}
+
+.create-tasks-button{
+  width : 100%;
+  border-radius: 5px;
+  color: black !important;
+  font-weight: bold !important;;
+  background-color: #e9d8a6;
+  border : none !important;
+  margin-bottom: 10px;
+}
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

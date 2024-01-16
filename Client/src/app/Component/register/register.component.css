@@ -1,0 +1,16 @@
+.signupForm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* This ensures the form takes the full height of the viewport */
+}
+
+.center {
+  width: 100%;
+  max-width: 400px; /* Adjust the maximum width as needed */
+}
+
+.signup_link {
+  text-align: center;
+  margin-top: 10px;
+}

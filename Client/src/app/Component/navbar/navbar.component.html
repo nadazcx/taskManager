@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand projectName" href="#">Task-Manager</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+
+        </div>
+    </div>
+    <!-- Right-aligned content -->
+    <div class="navbar-nav ml-auto mr-3">
+        <span class="navbar-text pr-3">
+            Welcome, <strong class="username">{{username?.toUpperCase()}}</strong>
+        </span>
+        <button class="btn  logout-btn " (click)="logout()">Logout</button>
+    </div>
+</nav>

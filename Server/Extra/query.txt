@@ -1,0 +1,66 @@
+CREATE DATABASE taskManager;
+
+User Table : 
+fields : userId,username,password
+
+query : 
+
+CREATE TABLE taskManager.users (
+  userId INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+-------------------------------------------------------------------
+
+userPresense : 
+fields : userId,socketId
+
+query : 
+CREATE TABLE taskManager.userPresense (
+    userId INT  PRIMARY KEY,
+    socketId VARCHAR(255) NOT NULL
+)
+
+-------------------------------------------------------------------
+
+project : 
+fields : pid,projectName,userIds
+query : 
+CREATE TABLE taskManager.projects (
+  pid INT AUTO_INCREMENT PRIMARY KEY,
+  projectName VARCHAR(255) NOT NULL,
+  userIds VARCHAR(255) NOT NULL
+);
+
+-------------------------------------------------------------------
+
+insert : 
+INSERT INTO taskManager.projects (projectName, userIds)
+VALUES 
+  ('Project 1', '1,2,3'),
+  ('Project 2', '2,4,5'),
+  ('Project 3', '1,3,4'),
+  ('Project 4', '2,5'),
+  ('Project 5', '1,4');
+-------------------------------------------------------------------
+
+task : 
+fields : taskId,taskName,projectId
+query : 
+CREATE TABLE tasksTEMP (
+  taskId INT AUTO_INCREMENT NOT NULL,
+  taskName VARCHAR(255) NOT NULL,
+  projectId INT NOT,
+  FOREIGN KEY (projectId) REFERENCES projects(pid)
+);
+
+INSERT INTO taskManager.tasksTEMP (taskName, projectId)
+VALUES ('Implement Feature X', 3);
+
+-------------------------------------------------------------------
+
+
+
+
+

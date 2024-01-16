@@ -1,0 +1,5 @@
+@import '~node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '~node_modules/ngx-toastr/toastr.css';
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
