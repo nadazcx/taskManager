@@ -346,6 +346,7 @@ export class TaskComponent implements OnInit {
     if (userDetails) {
       const user = JSON.parse(userDetails);
       const userId = user.user.userId;
+      const userNamename=user.user.username
 
       this.operationService.getProjectByUserId(userId).subscribe(
         (response) => {

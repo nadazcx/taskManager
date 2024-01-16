@@ -28,29 +28,53 @@ router.post("/getProjectsByUserId", (req, res) => __awaiter(void 0, void 0, void
         res.status(500).json({ error: "Internal Server Error" });
     }
 }));
-router.get("/getProjectDetailsByPid/:pid", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { pid } = req.params;
-        // Fetch project details from the database based on the project ID
-        const [project] = yield db_1.default
-            .promise()
-            .query("SELECT * FROM project WHERE pid=?", [pid]);
-        if (!project) {
-            return res.status(404).json({ message: "Project not found" });
-        }
-        // You can customize the response based on your project structure
-        const projectDetails = {
-            pid: project[0].pid,
-            projectName: project[0].projectName,
-            // Add other project details as needed
-        };
-        res.status(200).json({ projectDetails });
+
+
+
+router.get("/getProjectDetailsByPid/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+
+    // Fetch project details from the database based on the project ID
+    const [project] = await db
+      .promise()
+      .query("SELECT * FROM project WHERE pid=?", [pid]);
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
     }
-    catch (error) {
-        console.error("Error fetching project details:", error);
-        res.status(500).json({ message: "Internal Server Error" });
-    }
-}));
+
+    // Fetch user IDs associated with the project
+    const userIds = project[0].userIds.split(',').map(Number);
+
+    // Fetch usernames for each user ID
+    const [users] = await db
+      .promise()
+      .query("SELECT username FROM users WHERE userId IN (?)", [userIds]);
+
+    // Concatenate usernames into a single string
+    const usernames = users.map((user) => user.username).join(', ');
+
+    // Customize the response based on your project structure
+    const projectDetails = {
+      pid: project[0].pid,
+      projectName: project[0].projectName,
+      users: usernames,
+      // Add other project details as needed
+    };
+
+    res.json(projectDetails);
+  } catch (error) {
+    console.error("Error fetching project details:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+
+
+
+
+  
 router.post("/createProject", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(req.body);
