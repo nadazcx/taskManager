@@ -2,6 +2,8 @@ import express from "express";
 import db from "../config/db";
 import { fetchAllUserList } from "../Services/commonService";
 import { FieldPacket, RowDataPacket } from "mysql2";
+import { stringify } from "querystring";
+import { ppid } from "process";
 const router = express.Router();
 
 router.post("/getProjectsByUserId", async (req: any, res: any) => {
@@ -25,16 +27,19 @@ router.post("/getProjectsByUserId", async (req: any, res: any) => {
       .query("SELECT DISTINCT username FROM users WHERE userId IN (?)", [userIds]) as Promise<[RowDataPacket[], FieldPacket[]]>);
 
     // Extract usernames into an array
+
+   
     const usernames: string[] = users.map((user) => user.username);
 
     // Add usernames to the projects with the first one as the owner
     const projectsWithUsernames: any[] = projects.map((project) => {
-      const ownerUsername = usernames[0];
       return {
         pid: project.pid,
         projectName: project.projectName,
-        ownerUsername,
         usernames,
+        owner :usernames[0],
+
+        
         // Add other project details as needed
       };
     });
