@@ -10,12 +10,10 @@ router.post("/getProjectsByUserId", async (req: any, res: any) => {
   try {
     const userId = req.body.userId;
 
-    // Use type assertion for the result of the projects query
     const [projects] = await (db
       .promise()
       .query("SELECT * FROM project WHERE FIND_IN_SET(?, userIds)", [userId]) as Promise<[RowDataPacket[], FieldPacket[]]>);
 
-    // Extract user IDs from the projects
     const userIds: number[] = [];
     for (const project of projects) {
       userIds.push(...(project.userIds as string).split(',').map(Number));
@@ -27,19 +25,20 @@ router.post("/getProjectsByUserId", async (req: any, res: any) => {
       .query("SELECT DISTINCT username FROM users WHERE userId IN (?)", [userIds]) as Promise<[RowDataPacket[], FieldPacket[]]>);
 
     // Extract usernames into an array
-
-   
     const usernames: string[] = users.map((user) => user.username);
 
     // Add usernames to the projects with the first one as the owner
     const projectsWithUsernames: any[] = projects.map((project) => {
+      const projectUserIds: number[] = (project.userIds as string).split(',').map(Number);
+      const projectUsernames: string[] = usernames.filter((username, index) => projectUserIds.includes(userIds[index]));
+
+      console.log("usernames:", projectUsernames, "pid:", project.pid);
+
       return {
         pid: project.pid,
         projectName: project.projectName,
-        usernames,
-        owner :usernames[0],
-
-        
+        usernames: projectUsernames,
+        owner: projectUsernames[0],
         // Add other project details as needed
       };
     });
