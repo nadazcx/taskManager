@@ -124,21 +124,7 @@ router.get("/deleteTaskById/:taskId", async (req, res) => {
   }
 });
 
-router.get("/deleteUserPresenseById/:userId", async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    await db
-      .promise()
-      .query("DELETE FROM userPresense WHERE userId = ?", [userId]);
-    res.json({
-      success: true,
-      message: `user Presense deleted successfully for ${userId}`,
-    });
-  } catch (error) {
-    console.error("Error while delete tasks : ", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+
 
 router.post("/createTasks", async (req, res) => {
   try {
