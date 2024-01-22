@@ -13,7 +13,6 @@
 
 - Node.js: The backend runtime environment for executing server-side code.
   SQL: Used for database management.
-  Real-time Updates:
 
 ## Installation
 
